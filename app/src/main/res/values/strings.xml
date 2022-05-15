@@ -9,4 +9,8 @@
         <string name="do_something">Do Something</string>
         <string name="add_task">Add Task</string>
         <string name="total_tasks">Total Tasks</string>
+        <string name="task_titleOnDetaile">       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "</string>
+
+
 </resources>
+

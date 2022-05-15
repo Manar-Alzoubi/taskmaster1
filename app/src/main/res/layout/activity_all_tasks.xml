@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".allTasks">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/textView2"-->
-    <!--        android:layout_width="157dp"-->
-    <!--        android:layout_height="77dp"-->
-    <!--        android:text="All Tasks"-->
-    <!--        android:textSize="34dp"-->
-    <!--        android:textAlignment="center"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/imageView"

@@ -16,6 +16,13 @@
             android:name=".addTask"
             android:exported="false" />
         <activity
+            android:name=".taskDetails"
+            android:exported="false" />
+
+        <activity
+            android:name=".settingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
