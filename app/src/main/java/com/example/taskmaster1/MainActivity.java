@@ -1,26 +1,58 @@
 package com.example.taskmaster1;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
+        import android.os.Bundle;
+        import android.preference.PreferenceManager;
+        import android.util.Log;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.Adapter;
+        import android.widget.Button;
+        import android.widget.ScrollView;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
+        import com.example.taskmaster1.Task;
+
+        import java.util.ArrayList;
+        import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivity";
-
     private TextView username;
+    List<Task> tasksList = new ArrayList<>();
+
+
+//        public MainActivity(TextView username, List<Task> taskList) {
+//        this.username = username;
+//        this.tasksList = tasksList;
+//    }
+
+    private final View.OnClickListener addButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            Intent addTaskActivity = new Intent(getApplicationContext(),addTask.class);
+            startActivity(addTaskActivity);
+        }
+    };
+
+    private final View.OnClickListener allButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            Intent allTaskActivity = new Intent(getApplicationContext(),allTasks.class);
+            startActivity(allTaskActivity);
+        }
+    };
+
 
 
     @Override
@@ -35,63 +67,64 @@ public class MainActivity extends AppCompatActivity {
             navigateToSettings();
         });
 
-        Button addTask = findViewById(R.id.button6);
+        initialiseData();
 
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
+                tasksList, position -> {
+            Toast.makeText(
+                    MainActivity.this,
+                    "you clicked :  " + tasksList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(), taskDetails.class);
+            intent.putExtra("title",tasksList.get(position).getTitle());
+            intent.putExtra("body",tasksList.get(position).getBody());
+            intent.putExtra("state",tasksList.get(position).getState().toString());
+
+            startActivity(intent);
+        });
+
+        recyclerView.setAdapter(customRecyclerViewAdapter);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//
+//        Button pray = findViewById(R.id.button4);
+//        pray.setOnClickListener(view -> {
+//            Intent prayActivity = new Intent(this , taskDetails.class);
+//            prayActivity.putExtra("title" , pray.getText().toString());
+//            startActivity(prayActivity);
+//        });
+//
+//        Button read = findViewById(R.id.button5);
+//        read.setOnClickListener(view -> {
+//            Intent readActivity = new Intent(this , taskDetails.class);
+//            readActivity.putExtra("title" , read.getText().toString());
+//            startActivity(readActivity);
+//        });
+//
+//        Button sleep = findViewById(R.id.button3);
+//        sleep.setOnClickListener(view -> {
+//            Intent sleepActivity = new Intent(this , taskDetails.class);
+//            sleepActivity.putExtra("title" , sleep.getText().toString());
+//            startActivity(sleepActivity);
+//        });
+
+//
+        Button addTask = findViewById(R.id.button6);
         addTask.setOnClickListener(view -> {
             Intent addTaskActivity = new Intent(this , addTask.class);
             startActivity(addTaskActivity);
         });
-
         Button allTask = findViewById(R.id.button7);
 
         allTask.setOnClickListener(view -> {
             Intent allTaskActivity = new Intent(this , allTasks.class);
             startActivity(allTaskActivity);
         });
-
-
-        Button pray = findViewById(R.id.button4);
-        pray.setOnClickListener(view -> {
-            Intent prayActivity = new Intent(this , taskDetails.class);
-            prayActivity.putExtra("title" , pray.getText().toString());
-            startActivity(prayActivity);
-        });
-
-        Button read = findViewById(R.id.button5);
-        read.setOnClickListener(view -> {
-            Intent readActivity = new Intent(this , taskDetails.class);
-            readActivity.putExtra("title" , read.getText().toString());
-            startActivity(readActivity);
-        });
-
-        Button sleep = findViewById(R.id.button3);
-        sleep.setOnClickListener(view -> {
-            Intent sleepActivity = new Intent(this , taskDetails.class);
-            sleepActivity.putExtra("title" , sleep.getText().toString());
-            startActivity(sleepActivity);
-        });
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                navigateToSettings();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-    private void navigateToSettings() {
-        Intent settingsIntent = new Intent(this, settingsActivity.class);
-        startActivity(settingsIntent);
-    }
-
 
     @Override
     protected void onStart() {
@@ -104,14 +137,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.i(TAG, "onRestart: called");
     }
-
     @Override
     protected void onResume() {
         Log.i(TAG, "onResume: called - The App is VISIBLE");
-
-        setUserName();
         super.onResume();
-
+        setUserName();
     }
 
     @Override
@@ -132,7 +162,32 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                navigateToSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void navigateToSettings() {
+        Intent settingsIntent = new Intent(this, settingsActivity.class);
+        startActivity(settingsIntent);
+    }
+    private  void initialiseData(){
+        tasksList.add(new Task("Task 1" , "Do your homeWork" , "new"));
+        tasksList.add(new Task("Task 2" , "Go shopping" , "assigned"));
+        tasksList.add(new Task("Task 3" , "visit friend" , "in progress"));
+        tasksList.add(new Task("Task 4" , "stay with childs" , "complete"));
+    }
     private void setUserName() {
         // get text out of shared preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -141,5 +196,6 @@ public class MainActivity extends AppCompatActivity {
         username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") +"'s Tasks");
 
     }
+
 
 }

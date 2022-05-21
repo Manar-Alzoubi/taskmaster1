@@ -17,11 +17,20 @@
 ![all tasks page](screenShots/all.jpg)
 
 ------------------------------------------------------------------
-# Lab 28
+# Lab 27
 * Modifid home page (contains settings button ,username appeared , 3 tasks buttons, add task button ,all task button)
 
 ![home page](screenShots/home.jpg)
 
-* settings page (add a username to make it appeare in home page)
+* settings page (add a username to make it appear in home page)
 
 ![settings page](screenShots/settings.jpg)
+
+
+-------------------------------------------------------
+# lab 28
+
+![Recycler view](screenShots/recyclerview.jpg)
+
+
+![Task details](screenShots/detTask.jpg)
