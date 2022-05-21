@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 public class settingsActivity extends AppCompatActivity {
 
+
     private static final String TAG = settingsActivity.class.getSimpleName();
     public static final String UserName = "username";
     private EditText mUserNameEditText;
