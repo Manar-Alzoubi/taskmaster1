@@ -20,8 +20,8 @@ public class taskDetails extends AppCompatActivity {
         title.setText(newTitle);
 
         String newBody = intent.getStringExtra("body");
-        TextView body = findViewById(R.id.body);
-//        body.setText("hi");
+        TextView body = findViewById(R.id.textLorem);
+        body.setText(newBody);
 
         String newState = intent.getStringExtra("state");
         TextView state = findViewById(R.id.state);
