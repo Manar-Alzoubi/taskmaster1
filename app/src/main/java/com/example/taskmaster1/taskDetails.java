@@ -15,26 +15,16 @@ public class taskDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String newTitle = intent.getStringExtra("title");
-        TextView title = findViewById(R.id.title);
-        title.setText(newTitle);
+        TextView newTitle = findViewById(R.id.title);
+        TextView newBody = findViewById(R.id.textLorem);
+        TextView newState = findViewById(R.id.state);
 
-        String newBody = intent.getStringExtra("body");
-        TextView body = findViewById(R.id.body);
-//        body.setText("hi");
+        Long newId = Long.valueOf(intent.getIntExtra("id",0));
 
-        String newState = intent.getStringExtra("state");
-        TextView state = findViewById(R.id.state);
-        state.setText(newState);
-
-        System.out.println("*********************"+ newTitle);
-        System.out.println("*********************"+ newBody);
-        System.out.println("*********************"+ newState);
-
-
-
-
-
+        Task task = AppDatabase.getInstance(this).taskDao().getTaskById(newId);
+        newTitle.setText(task.getTitle());
+        newBody.setText(task.getBody());
+        newState.setText(task.getState().toString());
 
     }
 
