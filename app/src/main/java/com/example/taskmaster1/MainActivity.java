@@ -1,45 +1,45 @@
 package com.example.taskmaster1;
 
 import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
 
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.preference.PreferenceManager;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Adapter;
-        import android.widget.Button;
-        import android.widget.ScrollView;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.example.taskmaster1.Task;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView username;
     List<Task> tasksList = new ArrayList<>();
 
-
-//        public MainActivity(TextView username, List<Task> taskList) {
-//        this.username = username;
-//        this.tasksList = tasksList;
-//    }
+        public MainActivity(TextView username, List<Task> taskList) {
+        this.username = username;
+        this.tasksList = tasksList;
+    }
+    public MainActivity(){}
 
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
-            Intent addTaskActivity = new Intent(getApplicationContext(),addTask.class);
+
+            Intent addTaskActivity = new Intent(getApplicationContext(), addTask.class);
+
             startActivity(addTaskActivity);
         }
     };
@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            Intent allTaskActivity = new Intent(getApplicationContext(),allTasks.class);
+
+            Intent allTaskActivity = new Intent(getApplicationContext(), allTasks.class);
+
             startActivity(allTaskActivity);
         }
     };
@@ -67,30 +69,38 @@ public class MainActivity extends AppCompatActivity {
             navigateToSettings();
         });
 
-        initialiseData();
 
+//        initialiseData();
+        List<Task> taskList2 = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
-                tasksList, position -> {
-            Toast.makeText(
+
+         CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
+                 taskList2, position -> {
+             Toast.makeText(
                     MainActivity.this,
-                    "you clicked :  " + tasksList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    "you clicked :  " + taskList2.get(position).getTitle(), Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getApplicationContext(), taskDetails.class);
-            intent.putExtra("title",tasksList.get(position).getTitle());
-            intent.putExtra("body",tasksList.get(position).getBody());
-            intent.putExtra("state",tasksList.get(position).getState().toString());
+             Intent intent = new Intent(getApplicationContext(), taskDetails.class);
+//            intent.putExtra("title",tasksList.get(position).getTitle());
+//            intent.putExtra("body",tasksList.get(position).getBody());
+//            intent.putExtra("state",tasksList.get(position).getState().toString());
+            intent.putExtra("id",taskList2.get(position).getId());
+//             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//             System.out.println(taskList2.get(position).getTitle());
+//             System.out.println(taskList2.get(position).getBody());
+//             System.out.println(taskList2.get(position).getState());
 
-            startActivity(intent);
-        });
+             startActivity(intent);
+
+         });
 
         recyclerView.setAdapter(customRecyclerViewAdapter);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//
+
 //        Button pray = findViewById(R.id.button4);
 //        pray.setOnClickListener(view -> {
 //            Intent prayActivity = new Intent(this , taskDetails.class);
@@ -112,16 +122,20 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(sleepActivity);
 //        });
 
-//
+
+
         Button addTask = findViewById(R.id.button6);
         addTask.setOnClickListener(view -> {
-            Intent addTaskActivity = new Intent(this , addTask.class);
+            Intent addTaskActivity = new Intent(this, addTask.class);
+
             startActivity(addTaskActivity);
         });
         Button allTask = findViewById(R.id.button7);
 
         allTask.setOnClickListener(view -> {
-            Intent allTaskActivity = new Intent(this , allTasks.class);
+
+            Intent allTaskActivity = new Intent(this, allTasks.class);
+
             startActivity(allTaskActivity);
         });
     }
@@ -137,11 +151,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.i(TAG, "onRestart: called");
     }
+
     @Override
     protected void onResume() {
         Log.i(TAG, "onResume: called - The App is VISIBLE");
         super.onResume();
         setUserName();
+
     }
 
     @Override
@@ -178,24 +194,34 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private void navigateToSettings() {
         Intent settingsIntent = new Intent(this, settingsActivity.class);
         startActivity(settingsIntent);
     }
-    private  void initialiseData(){
-        tasksList.add(new Task("Task 1" , "Do your homeWork" , "new"));
-        tasksList.add(new Task("Task 2" , "Go shopping" , "assigned"));
-        tasksList.add(new Task("Task 3" , "visit friend" , "in progress"));
-        tasksList.add(new Task("Task 4" , "stay with childs" , "complete"));
+
+
+    private void initialiseData() {
+        tasksList.add(new Task("Task 1", "Do your homeWork", "new"));
+        tasksList.add(new Task("Task 2", "Go shopping", "assigned"));
+        tasksList.add(new Task("Task 3", "visit friend", "in progress"));
+        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
     }
+
+
     private void setUserName() {
         // get text out of shared preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // set text on text view User Name
-        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") +"'s Tasks");
+
+        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks");
+
 
     }
 
 
+
 }
+
+

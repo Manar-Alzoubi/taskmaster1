@@ -1,8 +1,12 @@
 package com.example.taskmaster1;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "task")
 public class Task {
-
+    @PrimaryKey(autoGenerate = true)
+    public int id;
     private String title;
     private String body;
     private String state;
@@ -10,7 +14,15 @@ public class Task {
     public Task(String title, String body, String state) {
         this.title = title;
         this.body = body;
-        setState(state);
+        this.state = state;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setTitle(String title) {
@@ -22,15 +34,7 @@ public class Task {
     }
 
     public void setState(String state) {
-        if(state == "new") {
-            this.state = state;
-        }else if (state == "assigned"){
-            this.state = state;
-        } else if (state == "in progress"){
-            this.state = state;
-        } else if (state == "complete"){
-            this.state = state;
-        }else System.out.println("state should be one of : new ,assigned, in progress, complete");
+        this.state = state;
     }
 
     public String getTitle() {
