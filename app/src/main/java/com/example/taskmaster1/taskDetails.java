@@ -15,9 +15,11 @@ public class taskDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+
         TextView newTitle = findViewById(R.id.title);
         TextView newBody = findViewById(R.id.textLorem);
         TextView newState = findViewById(R.id.state);
+
 
         Long newId = Long.valueOf(intent.getIntExtra("id",0));
 
