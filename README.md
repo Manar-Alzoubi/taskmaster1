@@ -34,3 +34,16 @@
 
 
 ![Task details](screenShots/detTask.jpg)
+
+--------------------------------------------------
+
+# Lab29
+
+* add new Task and save it to database
+  ![add new Task and save it to database](screenShots/addToDB.jpg)
+
+* view (retrive) the task from Database
+  ![view (retrive) the task from Database](screenShots/viewOnRecycleView.jpg)
+  
+* click on the task to view the details (title, description and state)
+  ![task details](screenShots/viewTaskDet.jpg)
