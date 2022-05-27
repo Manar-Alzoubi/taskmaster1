@@ -30,8 +30,8 @@ public class addTask extends AppCompatActivity {
 
 
             Task task = new Task(mTitle.getText().toString(), mDesc.getText().toString(), spinner.getSelectedItem().toString());
-            System.out.println("task =================================");
-            System.out.println(task);
+//            System.out.println("task =================================");
+//            System.out.println(task);
 
             AppDatabase.getInstance(getApplicationContext()).taskDao().insertTask(task);
             Toast.makeText(this, "task added", Toast.LENGTH_SHORT).show();
