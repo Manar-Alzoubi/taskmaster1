@@ -78,5 +78,6 @@ public class settingsActivity extends AppCompatActivity {
         preferenceEditor.apply();
         Toast.makeText(this, "the username is saved ", Toast.LENGTH_SHORT).show();
 
+
     }
 }
