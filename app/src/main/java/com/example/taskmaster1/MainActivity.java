@@ -18,6 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configureAmplify();
+
+
+
         username = findViewById(R.id.editUserName);
 
         Button settBtn = findViewById(R.id.button8);
@@ -71,25 +80,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        initialiseData();
-        List<Task> taskList2 = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
+//        List<Task> taskList2 = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
+//        List<com.amplifyframework.datastore.generated.model.Task> tasksListDB = new ArrayList<com.amplifyframework.datastore.generated.model.Task>();
+        List<Task> tasksListDB = new ArrayList<>();
+
+        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
+                tasks -> {
+                    while (tasks.hasNext()) {
+                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
+                        tasksListDB.add(task);
+                        Log.i(TAG, "Task Title is  : " + task.getTitle());
+                    }
+                },
+                failure -> Log.e("Amplify", "failed to query .", failure)
+        );
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-         CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
-                 taskList2, position -> {
+        CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
+                tasksListDB, position -> {
              Toast.makeText(
                     MainActivity.this,
-                    "you clicked :  " + taskList2.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    "you clicked :  " + tasksListDB.get(position).getTitle(), Toast.LENGTH_SHORT).show();
 
              Intent intent = new Intent(getApplicationContext(), taskDetails.class);
 //            intent.putExtra("title",tasksList.get(position).getTitle());
 //            intent.putExtra("body",tasksList.get(position).getBody());
 //            intent.putExtra("state",tasksList.get(position).getState().toString());
-            intent.putExtra("id",taskList2.get(position).getId());
-//             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//             System.out.println(taskList2.get(position).getTitle());
-//             System.out.println(taskList2.get(position).getBody());
-//             System.out.println(taskList2.get(position).getState());
+            intent.putExtra("id",tasksListDB.get(position).getId());
+
 
              startActivity(intent);
 
@@ -200,13 +219,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingsIntent);
     }
 
+//    private void initialiseData() {
+//        tasksList.add(new Task("Task 1", "Do your homeWork", "new"));
+//        tasksList.add(new Task("Task 2", "Go shopping", "assigned"));
+//        tasksList.add(new Task("Task 3", "visit friend", "in progress"));
+//        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
+//    }
 
-    private void initialiseData() {
-        tasksList.add(new Task("Task 1", "Do your homeWork", "new"));
-        tasksList.add(new Task("Task 2", "Go shopping", "assigned"));
-        tasksList.add(new Task("Task 3", "visit friend", "in progress"));
-        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
-    }
 
 
     private void setUserName() {
@@ -219,7 +238,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private void configureAmplify() {
+        try {
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.configure(getApplicationContext());
 
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException e) {
+            Log.e(TAG, "Could not initialize Amplify", e);
+        }
+    }
 
 
 }
