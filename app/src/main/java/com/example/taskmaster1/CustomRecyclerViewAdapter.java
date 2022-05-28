@@ -14,10 +14,10 @@ import com.example.taskmaster1.Task;
 import java.util.List;
 
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.CustomViewHolder>{
-    List<Task> tasksList;
+    List<com.amplifyframework.datastore.generated.model.Task> tasksList;
     CustomClickListener listener;
 
-    public CustomRecyclerViewAdapter(List<Task> tasksList, CustomClickListener listener) {
+    public CustomRecyclerViewAdapter(List<com.amplifyframework.datastore.generated.model.Task> tasksList, CustomClickListener listener) {
         this.tasksList = tasksList;
         this.listener = listener;
     }
@@ -25,8 +25,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.title.setText(tasksList.get(position).getTitle());
-        holder.body.setText(tasksList.get(position).getBody());
-        holder.state.setText(tasksList.get(position).getState().toString());
+        holder.body.setText(tasksList.get(position).getDescription());
+        holder.state.setText(tasksList.get(position).getStatus().toString());
     }
 
     @NonNull
