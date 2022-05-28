@@ -1,6 +1,7 @@
 package com.example.taskmaster1;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.amplifyframework.datastore.generated.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView username;
@@ -35,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
         this.tasksList = tasksList;
     }
     public MainActivity(){}
+
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
+
             Intent addTaskActivity = new Intent(getApplicationContext(), addTask.class);
+
             startActivity(addTaskActivity);
         }
     };
@@ -48,10 +53,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+
             Intent allTaskActivity = new Intent(getApplicationContext(), allTasks.class);
+
             startActivity(allTaskActivity);
         }
     };
+
 
 
     @Override
@@ -69,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         settBtn.setOnClickListener(view -> {
             navigateToSettings();
         });
+
 
 //        initialiseData();
 //        List<Task> taskList2 = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
@@ -104,10 +113,12 @@ public class MainActivity extends AppCompatActivity {
              startActivity(intent);
 
          });
+
         recyclerView.setAdapter(customRecyclerViewAdapter);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
 //        Button pray = findViewById(R.id.button4);
 //        pray.setOnClickListener(view -> {
@@ -131,15 +142,19 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
+
         Button addTask = findViewById(R.id.button6);
         addTask.setOnClickListener(view -> {
             Intent addTaskActivity = new Intent(this, addTask.class);
+
             startActivity(addTaskActivity);
         });
         Button allTask = findViewById(R.id.button7);
 
         allTask.setOnClickListener(view -> {
+
             Intent allTaskActivity = new Intent(this, allTasks.class);
+
             startActivity(allTaskActivity);
         });
     }
@@ -211,12 +226,16 @@ public class MainActivity extends AppCompatActivity {
 //        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
 //    }
 
+
+
     private void setUserName() {
         // get text out of shared preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // set text on text view User Name
+
         username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks");
+
 
     }
     private void configureAmplify() {
@@ -231,5 +250,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
 }
+
 
