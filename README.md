@@ -127,7 +127,10 @@
 
 ![AWS tasks and Teams](screenShots/teamAWS.png)
 
+-------------------------------------------------------
+ # Lab 34 : 
 
+* app-release-APK is generated in this lab : used in publishing the app in play store 
 
 
 
