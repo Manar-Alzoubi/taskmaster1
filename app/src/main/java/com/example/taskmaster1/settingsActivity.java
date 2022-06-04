@@ -3,23 +3,39 @@ package com.example.taskmaster1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class settingsActivity extends AppCompatActivity {
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Team;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class settingsActivity extends AppCompatActivity {
 
     private static final String TAG = settingsActivity.class.getSimpleName();
     public static final String UserName = "username";
     private EditText mUserNameEditText;
+    public static final String TeamName = "teamName";
+    Spinner teamSelector;
+    private List<String> teamsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +44,23 @@ public class settingsActivity extends AppCompatActivity {
 
         Button btnsubmit = findViewById(R.id.btnsubmit);
         mUserNameEditText = findViewById(R.id.username);
+        teamSelector = findViewById(R.id.teamSpinner);
+
+//        Handler handler = new Handler(Looper.getMainLooper() , msg -> {
+//
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),  android.R.layout.simple_spinner_dropdown_item, teamsList);
+//            adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+//
+//            teamSelector.setAdapter(adapter);
 
         // On Click
         btnsubmit.setOnClickListener(view -> {
             // Method to save the userName
             saveUserName();
-
-            // Check if no view has focus: https://stackoverflow.com/questions/1109022/how-to-close-hide-the-android-soft-keyboard-programmatically
-            View newview = this.getCurrentFocus();
-            if (newview != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(newview.getWindowToken(), 0);
-            }
         });
+//            return true ;
+//        });
+
         // Enable the Button
         mUserNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,7 +83,10 @@ public class settingsActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
+
     // Method to save the userName
     private void saveUserName() {
         // get the text from the edit text
@@ -76,8 +99,14 @@ public class settingsActivity extends AppCompatActivity {
         // save the text to shared preferences
         preferenceEditor.putString(UserName, username);
         preferenceEditor.apply();
-        Toast.makeText(this, "the username is saved ", Toast.LENGTH_SHORT).show();
 
+        String teamName = teamSelector.getSelectedItem().toString();
+        preferenceEditor.putString(TeamName,teamName);
+//        Log.i(TAG, "==== Team name settings   ====" + teamName);
+        preferenceEditor.apply();
 
+        Toast.makeText(this, "username Saved", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
+
 }

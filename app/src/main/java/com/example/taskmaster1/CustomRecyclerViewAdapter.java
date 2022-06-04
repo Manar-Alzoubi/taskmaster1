@@ -13,7 +13,7 @@ import com.example.taskmaster1.Task;
 
 import java.util.List;
 
-public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.CustomViewHolder>{
+public abstract class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.CustomViewHolder>{
     List<com.amplifyframework.datastore.generated.model.Task> tasksList;
     CustomClickListener listener;
 
@@ -44,6 +44,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     public int getItemCount() {
         return tasksList.size();
     }
+
+    public abstract void onTaskItemClicked(int position);
 
     public interface CustomClickListener {
         void onTaskClicked(int position);
