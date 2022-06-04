@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -17,12 +19,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +36,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView username;
-    List<Task> tasksList = new ArrayList<>();
+    private TextView teamName;
 
-        public MainActivity(TextView username, List<Task> taskList) {
-        this.username = username;
-        this.tasksList = tasksList;
-    }
+    List<Task> tasksListDB = new ArrayList<>();
+    private Handler handler;
+    String newTeamName;
+
+
+
+//        public MainActivity(TextView username, List<Task> tasksList) {
+//        this.username = username;
+////        this.tasksList = tasksList;
+//    }
     public MainActivity(){}
 
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
@@ -73,73 +85,63 @@ public class MainActivity extends AppCompatActivity {
 
         username = findViewById(R.id.editUserName);
 
+         teamName = findViewById(R.id.editTeam);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String newTeamName =  sharedPreferences.getString(settingsActivity.TeamName,"");
+
+        System.out.println("my tasks : " + tasksListDB);
+        getTasksAssignedToTeams(newTeamName);
+
         Button settBtn = findViewById(R.id.button8);
         settBtn.setOnClickListener(view -> {
             navigateToSettings();
         });
 
+        handler = new Handler(Looper.getMainLooper(), msg -> {
+            RecyclerView recyclerView = findViewById(R.id.recycler_view);
+            CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
+                    tasksListDB, position -> {
+                Toast.makeText(
+                        MainActivity.this,
+                        "you clicked :  " + tasksListDB.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), taskDetails.class);
+                intent.putExtra("id", tasksListDB.get(position).getId());
+                startActivity(intent);
+            }) {
+                @Override
+                public void onTaskItemClicked(int position) {
 
-//        initialiseData();
-//        List<Task> taskList2 = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
-//        List<com.amplifyframework.datastore.generated.model.Task> tasksListDB = new ArrayList<com.amplifyframework.datastore.generated.model.Task>();
-        List<Task> tasksListDB = new ArrayList<>();
+                }
+            };
+            recyclerView.setAdapter(customRecyclerViewAdapter);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
-                tasks -> {
-                    while (tasks.hasNext()) {
-                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
-                        tasksListDB.add(task);
-                        Log.i(TAG, "Task Title is  : " + task.getTitle());
-                    }
-                },
-                failure -> Log.e("Amplify", "failed to query .", failure)
-        );
+            return true;
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        });
 
-        CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(
-                tasksListDB, position -> {
-             Toast.makeText(
-                    MainActivity.this,
-                    "you clicked :  " + tasksListDB.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+////        Button pray = findViewById(R.id.button4);
+////        pray.setOnClickListener(view -> {
+////            Intent prayActivity = new Intent(this , taskDetails.class);
+////            prayActivity.putExtra("title" , pray.getText().toString());
+////            startActivity(prayActivity);
+////        });
+////
+////        Button read = findViewById(R.id.button5);
+////        read.setOnClickListener(view -> {
+////            Intent readActivity = new Intent(this , taskDetails.class);
+////            readActivity.putExtra("title" , read.getText().toString());
+////            startActivity(readActivity);
+////        });
+////
+////        Button sleep = findViewById(R.id.button3);
+////        sleep.setOnClickListener(view -> {
+////            Intent sleepActivity = new Intent(this , taskDetails.class);
+////            sleepActivity.putExtra("title" , sleep.getText().toString());
+////            startActivity(sleepActivity);
+////        });
 
-             Intent intent = new Intent(getApplicationContext(), taskDetails.class);
-//            intent.putExtra("title",tasksList.get(position).getTitle());
-//            intent.putExtra("body",tasksList.get(position).getBody());
-//            intent.putExtra("state",tasksList.get(position).getState().toString());
-            intent.putExtra("id",tasksListDB.get(position).getId());
-
-
-             startActivity(intent);
-
-         });
-
-        recyclerView.setAdapter(customRecyclerViewAdapter);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-//        Button pray = findViewById(R.id.button4);
-//        pray.setOnClickListener(view -> {
-//            Intent prayActivity = new Intent(this , taskDetails.class);
-//            prayActivity.putExtra("title" , pray.getText().toString());
-//            startActivity(prayActivity);
-//        });
-//
-//        Button read = findViewById(R.id.button5);
-//        read.setOnClickListener(view -> {
-//            Intent readActivity = new Intent(this , taskDetails.class);
-//            readActivity.putExtra("title" , read.getText().toString());
-//            startActivity(readActivity);
-//        });
-//
-//        Button sleep = findViewById(R.id.button3);
-//        sleep.setOnClickListener(view -> {
-//            Intent sleepActivity = new Intent(this , taskDetails.class);
-//            sleepActivity.putExtra("title" , sleep.getText().toString());
-//            startActivity(sleepActivity);
-//        });
 
 
 
@@ -176,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onResume: called - The App is VISIBLE");
         super.onResume();
         setUserName();
-
     }
 
     @Override
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+
                 navigateToSettings();
                 return true;
             default:
@@ -226,18 +228,15 @@ public class MainActivity extends AppCompatActivity {
 //        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
 //    }
 
-
-
-    private void setUserName() {
+private void setUserName() {
         // get text out of shared preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // set text on text view User Name
+        // set text on text view User Name    editTeam
+        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks" );
+        teamName.setText("Tasks For : "+ sharedPreferences.getString(settingsActivity.TeamName," "));
+        }
 
-        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks");
-
-
-    }
     private void configureAmplify() {
         try {
             Amplify.addPlugin(new AWSApiPlugin());
@@ -251,6 +250,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-}
+    private void getTasksAssignedToTeams(String newTeamName) {
+        Amplify.API.query(
+                ModelQuery.list(Team.class),
+                teams -> {
+                    for (Team team : teams.getData()) {
+                        if (team.getName().equals(newTeamName)) {
+                            Amplify.API.query(
+                                    ModelQuery.list(Task.class, Task.TEAM_TASKS_LIST_ID.eq(team.getId())),
+                                    success -> {
+                                        tasksListDB = new ArrayList<>();
+                                        if (success.hasData()) {
+                                            for (Task task : success.getData()) {
+                                                tasksListDB.add(task);
+                                            }
+                                        }
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Team", success.toString());
 
+                                        Message message = new Message();
+                                        message.setData(bundle);
+
+                                        handler.sendMessage(message);
+
+                                    },
+                                    error -> Log.e(TAG, error.toString(), error)
+                            );
+                        }
+                    }
+
+
+                },
+                error -> Log.e(TAG, error.toString(), error)
+        );
+    }
+}
 

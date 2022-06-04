@@ -109,6 +109,26 @@
 * AWS Tasks page
 
   ![add-task page](screenShots/TasksOnAWS.jpg)
+ ---------------------------------------------------
+# Lab 33
+* 3 Teams added to the database and each user assigned to a Team
+* Tasks that added also assigned to a specific Team
+* when a user entered his/her data (username and Team ) the tasks for that Team will appeare in the homepage 
+
+![add task team](screenShots/addTeamTask.jpg)
+
+
+
+![Team1](screenShots/team1.jpg)
+
+
+![Tasks for team 1](screenShots/tasksTeam1.jpg)
+
+
+![AWS tasks and Teams](screenShots/teamAWS.png)
+
+
+
 
 
 
