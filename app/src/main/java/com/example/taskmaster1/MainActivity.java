@@ -42,12 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     String newTeamName;
 
-
-
-//        public MainActivity(TextView username, List<Task> tasksList) {
-//        this.username = username;
-////        this.tasksList = tasksList;
-//    }
     public MainActivity(){}
 
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
@@ -87,9 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
          teamName = findViewById(R.id.editTeam);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String newTeamName =  sharedPreferences.getString(settingsActivity.TeamName,"");
+         newTeamName =  sharedPreferences.getString(settingsActivity.TeamName,"");
 
-        System.out.println("my tasks : " + tasksListDB);
         getTasksAssignedToTeams(newTeamName);
 
         Button settBtn = findViewById(R.id.button8);

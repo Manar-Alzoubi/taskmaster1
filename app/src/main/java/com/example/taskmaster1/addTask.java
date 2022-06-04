@@ -79,11 +79,6 @@ public class addTask extends AppCompatActivity {
             String newState = spinner.getSelectedItem().toString();
             String newTeam = teamSelector.getSelectedItem().toString();
 
-//            Task task = new Task(mTitle.getText().toString(), mDesc.getText().toString(), spinner.getSelectedItem().toString());
-//            System.out.println("task =================================");
-//            System.out.println(task);
-//            AppDatabase.getInstance(getApplicationContext()).taskDao().insertTask(task);
-
             Amplify.API.query(
                     ModelQuery.list(Team.class, Team.NAME.eq(newTeam)),
                     success->{
@@ -95,7 +90,7 @@ public class addTask extends AppCompatActivity {
                                     .status(newState)
                                     .teamTasksListId(team.getId())
                                     .build();
-                            
+
                             // Data store save
                             Amplify.DataStore.save(newTask,
                                     saved -> Log.i(TAG, "Saved Task: " + newTask.getTitle()),
