@@ -1,6 +1,7 @@
 package com.example.taskmaster1;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ import com.amplifyframework.datastore.generated.model.Team;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView username;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     String newTeamName;
 
     public MainActivity(){}
+
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(allTaskActivity);
         }
     };
+
 
 
     @Override
@@ -136,15 +140,20 @@ public class MainActivity extends AppCompatActivity {
 ////        });
 
 
+
+
         Button addTask = findViewById(R.id.button6);
         addTask.setOnClickListener(view -> {
             Intent addTaskActivity = new Intent(this, addTask.class);
+
             startActivity(addTaskActivity);
         });
         Button allTask = findViewById(R.id.button7);
 
         allTask.setOnClickListener(view -> {
+
             Intent allTaskActivity = new Intent(this, allTasks.class);
+
             startActivity(allTaskActivity);
         });
     }
@@ -220,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
 //        tasksList.add(new Task("Task 3", "visit friend", "in progress"));
 //        tasksList.add(new Task("Task 4", "stay with childs", "complete"));
 //    }
+
 private void setUserName() {
         // get text out of shared preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -233,6 +243,7 @@ private void setUserName() {
 
         teamName.setText("Tasks For : "+ sharedPreferences.getString(settingsActivity.TeamName," "));
         }
+
 
 
     private void getTasksAssignedToTeams(String newTeamName) {
@@ -277,3 +288,4 @@ private void setUserName() {
         );
     }
 }
+
