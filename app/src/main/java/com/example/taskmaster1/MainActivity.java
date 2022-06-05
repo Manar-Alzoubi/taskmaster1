@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Task> tasksListDB = new ArrayList<>();
     private Handler handler;
+    private Handler handler1;
     String newTeamName;
 
     public MainActivity(){}
@@ -106,12 +107,18 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             };
+
             recyclerView.setAdapter(customRecyclerViewAdapter);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             return true;
 
+        });
+        handler1= new Handler(Looper.getMainLooper(),msg ->{
+            String newUser= msg.getData().getString("newUserName");
+            username.setText(newUser);
+            return true;
         });
 
 ////        Button pray = findViewById(R.id.button4);
@@ -226,13 +233,21 @@ private void setUserName() {
 
         // set text on text view User Name    editTeam
 //        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks" );
-
-             String newUser = Amplify.Auth.getCurrentUser().getUsername();
-             username.setText(newUser);
-
-
-        teamName.setText("Tasks For : "+ sharedPreferences.getString(settingsActivity.TeamName," "));
+//          username.setText(Amplify.Auth.getCurrentUser().getUsername());
+          teamName.setText("Tasks For : "+ sharedPreferences.getString(settingsActivity.TeamName," "));
+          Amplify.Auth.fetchUserAttributes(
+                  attributes ->{
+                      Log.i(TAG,"user attributes-->  "+attributes.get(2).getValue());
+                      Bundle bundle =new Bundle();
+                      bundle.putString("newUserName",attributes.get(2).getValue());
+                      Message message = new Message();
+                      message.setData(bundle);
+                      handler1.sendMessage(message);
+                  },
+                  error -> Log.e(TAG, "can't find username",error)
+          );
         }
+
 
 
     private void getTasksAssignedToTeams(String newTeamName) {

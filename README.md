@@ -146,4 +146,4 @@
 
 * logout button and display user info 
 
-![logout](screenShots/entere1.jpg)
+![logout](screenShots/entered.jpg)
