@@ -23,6 +23,10 @@ import android.os.Handler;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.auth.AuthUserAttributeKey;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        configureAmplify();
+//        configureAmplify();
 
 
 
@@ -192,12 +196,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-
                 navigateToSettings();
                 return true;
-            default:
+            case R.id.action_Log_Out:
+                logOut();
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                startActivity(loginIntent);
+                return true;
+                    default:
                 return super.onOptionsItemSelected(item);
-        }
+
+    }
     }
 
     private void navigateToSettings() {
@@ -216,21 +225,15 @@ private void setUserName() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // set text on text view User Name    editTeam
-        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks" );
+//        username.setText(sharedPreferences.getString(settingsActivity.UserName, " ") + "'s Tasks" );
+
+             String newUser = Amplify.Auth.getCurrentUser().getUsername();
+             username.setText(newUser);
+
+
         teamName.setText("Tasks For : "+ sharedPreferences.getString(settingsActivity.TeamName," "));
         }
 
-    private void configureAmplify() {
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.configure(getApplicationContext());
-
-            Log.i(TAG, "Initialized Amplify");
-        } catch (AmplifyException e) {
-            Log.e(TAG, "Could not initialize Amplify", e);
-        }
-    }
 
     private void getTasksAssignedToTeams(String newTeamName) {
         Amplify.API.query(
@@ -264,6 +267,13 @@ private void setUserName() {
 
                 },
                 error -> Log.e(TAG, error.toString(), error)
+        );
+    }
+    private void logOut() {
+        Amplify.Auth.signOut(
+                AuthSignOutOptions.builder().globalSignOut(true).build(),
+                () -> Log.i("AuthQuickstart", "Signed out globally"),
+                error -> Log.e("AuthQuickstart", error.toString())
         );
     }
 }

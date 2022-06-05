@@ -132,6 +132,18 @@
 
 * app-release-APK is generated in this lab : used in publishing the app in play store 
 
+--------------------------------------------
+# Lab 36
+* SignUp page 
+
+![SignUp](screenShots/signup.jpg)
 
 
+* Login page 
 
+![Login](screenShots/login.jpg)
+
+
+* logout button and display user info 
+
+![logout](screenShots/entere1.jpg)
