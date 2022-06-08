@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Handler handler1;
     String newTeamName;
-
     public MainActivity(){}
 
     private final View.OnClickListener addButtonListener = new View.OnClickListener() {
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 //        configureAmplify();
 
 
-
         username = findViewById(R.id.editUserName);
 
          teamName = findViewById(R.id.editTeam);
@@ -104,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         "you clicked :  " + tasksListDB.get(position).getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), taskDetails.class);
                 intent.putExtra("id", tasksListDB.get(position).getId());
+                System.out.println("tasks list DB : "+ tasksListDB);
                 startActivity(intent);
             }) {
                 @Override

@@ -131,6 +131,35 @@
  # Lab 34 : 
 
 * app-release-APK is generated in this lab : used in publishing the app in play store 
+*publishing : makes your Android applications available to users
+  * perform two main tasks publish an Android application:
+    * prepare the application for release
+    * release the application to users
+
+* Preparing app for release:
+  * remove Log calls and remove the android:debuggable attribute from your manifest file.
+  * provide values for the android:versionCode and android:versionName attributes, which are located in the element.
+  * configure several other settings to meet Google Play requirements or accommodate whatever method you're using to release your application.
+
+* Building and signing a release version of your application
+  * use the Gradle build files with the release build type to build and sign a release version of your application.
+  
+* Testing the release version of your application.
+* Updating application resources for release
+    * be sure that all application resources such as multimedia files and graphics are updated and included with your application
+* Preparing remote servers and services that your application depends on
+
+* you will need to get a private key for signing your application
+
+* You will also need to create an icon for your application
+
+* you may want to prepare an End User License Agreement (EULA) to protect your person, organization, and intellectual property.
+
+* on your own website
+  * by sending an application directly to a user.
+  * prepare your application for release in the normal way
+  * need host the release-ready APK file on your website and provide a download link to users.
+  * it is relatively easy to release your application on your own website, it can be inefficient
 
 --------------------------------------------
 # Lab 36
@@ -147,3 +176,19 @@
 * logout button and display user info 
 
 ![logout](screenShots/entered.jpg)
+
+
+----------------------------------
+# Lab 37
+* add Task page:
+  now in addTask page the task can added with an image assigned to each task, or without image 
+
+![upload image](screenShots/pic3.jpg)
+
+* TaskDetails page :
+  the task can be viewed with it's pproperities(Title , Body , Status , and an image (if exist))
+
+![ download in taskdetails](screenShots/pic1.jpg)
+
+
+![download in taskdetails](screenShots/pic2.jpg)

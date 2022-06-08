@@ -7,30 +7,11 @@
 
     tools:context=".taskDetails">
 
-
-    <TextView
-        android:id="@+id/textLorem"
-        android:layout_width="318dp"
-        android:layout_height="253dp"
-        android:layout_marginBottom="84dp"
-        android:background="@color/teal_200"
-        android:padding="30dp"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-        android:textAlignment="center"
-        android:textColor="@color/purple_700"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/state"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
-
     <TextView
         android:id="@+id/title"
-        android:layout_width="216dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginBottom="50dp"
-        android:background="@color/teal_200"
+        android:layout_width="408dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="Title"
         android:textAlignment="center"
@@ -42,20 +23,49 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textLorem"
+        android:layout_width="406dp"
+        android:layout_height="89dp"
+        android:layout_marginBottom="12dp"
+        android:padding="30dp"
+        android:text="Lorem Ipsum "
+        android:textAlignment="center"
+        android:textColor="@color/purple_700"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/s3Image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <ImageView
+        android:id="@+id/s3Image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/state"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLorem"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
         android:id="@+id/state"
-        android:layout_width="262dp"
-        android:layout_height="95dp"
-        android:layout_marginBottom="86dp"
-        android:background="@color/teal_200"
+        android:layout_width="308dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="69dp"
+        android:layout_marginBottom="30dp"
         android:padding="20dp"
         android:text="state"
         android:textAlignment="center"
-        android:textSize="25dp"
         android:textColor="@color/purple_700"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLorem" />
+        app:layout_constraintTop_toBottomOf="@+id/s3Image" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

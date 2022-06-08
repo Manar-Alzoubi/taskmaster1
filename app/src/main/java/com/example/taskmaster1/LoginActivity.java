@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         loadingProgressBar = findViewById(R.id.loading);
-
+        loginButton.setEnabled(true);
         signUpPrompt.setOnClickListener(view -> {
             Intent navigateToSignUpIntent = new Intent(this, SignUpActivity.class);
             startActivity(navigateToSignUpIntent);
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 password,
                 result -> {
                     Log.i(TAG, result.isSignInComplete() ? "Sign in succeeded" : "Sign in not complete");
-                    loadingProgressBar.setVisibility(View.INVISIBLE);
+                    loadingProgressBar.setVisibility(View.VISIBLE);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 },
                 error -> Log.e(TAG, error.toString())
