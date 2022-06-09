@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.net.wifi.aware.DiscoverySession;
 import android.os.Bundle;
-import android.os.Looper;
-import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -34,8 +30,6 @@ import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.UUID;
-import java.util.logging.Handler;
 
 
 public class addTask extends AppCompatActivity {
@@ -48,14 +42,32 @@ public class addTask extends AppCompatActivity {
     private Spinner teamSelector;
     String imageKey = null;
     private Button uploadImg;
-    private Handler handler;
+
     File file;
-    static int count=0;
+//    static int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+//        Intent intent = getIntent();
+//        String action = intent.getAction();
+//        String type = intent.getType();
+//
+//        if (Intent.ACTION_SEND.equals(action) && type != null) {
+//            if ("text/plain".equals(type)) {
+//                Log.i(TAG, "handleSendText: Type => " + type);
+////                handleSendText(intent); // Handle text being sent
+//            } else if (type.startsWith("image/")) {
+//                Log.i(TAG, "handleSendImage: Type => " + type);
+////                handleSendImage(intent); // Handle single image being sent
+//
+//            }
+//        } else { // Handle other intents, such as being started from the home screen
+//        }
+
+
          uploadImg = findViewById(R.id.uploadBtn);
 
         uploadImg.setOnClickListener(view2 -> imageUpload());
@@ -106,7 +118,6 @@ public class addTask extends AppCompatActivity {
             String newState = spinner.getSelectedItem().toString();
             String newTeam = teamSelector.getSelectedItem().toString();
 
-
             Amplify.API.query(
                     ModelQuery.list(Team.class, Team.NAME.eq(newTeam)),
                     success->{
@@ -146,8 +157,49 @@ public class addTask extends AppCompatActivity {
             Toast.makeText(this, "task added", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         });
+       }
+//    void handleSendText(Intent intent) {
+//        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+//        if (sharedText != null) {
+//
+//        }
+//    }
+//    void handleSendImage(Intent intent) throws IOException {
+//        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+//        if (imageUri != null) {
+//            Log.e(TAG, "Upload failed " + " noooo");
+//            File file = BitMapHandler(imageUri, "hi.jpg");
+//            uploadFile(file, "hi.jpg");
+//        }
+//
+//    }
+//    private File BitMapHandler(Uri currentUri, String titleName) throws IOException {
+//        Bitmap bitmap = getBitmapFromUri(currentUri);
+//
+//        File file = new File(getApplicationContext().getFilesDir(), titleName + ".jpg");
+//        OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+//        os.close();
+//        return file;
+//    }
+//    private void uploadFile(File file, String titleName) {
+//
+//
+//        Log.e(TAG, "Upload failed " + titleName);
+//        Amplify.Storage.uploadFile(
+//                titleName + ".jpg",
+//                file,
+//                result -> {
+//                    Log.i(TAG, "Successfully uploaded: " + result.getKey());
+//                    IMGurl = result.getKey();
+//                    changUploadBotonColor();
+//                },
+//                storageFailure -> Log.e(TAG, "Upload failed", storageFailure)
+//
+//        );
+//
+//    }
 
-    }
 
     public void imageUpload(){
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -178,9 +230,7 @@ public class addTask extends AppCompatActivity {
 
                     try {
                         Bitmap bitmap = getBitmapFromUri(currentUri);
-//                        String imageName= imgName+count;
-//                        System.out.println("image name ............................................"+ imageName.toString());
-//                        File file = new File(getApplicationContext().getFilesDir(), imageName+".jpg");
+
                         EditText imgTitle = findViewById(R.id.newTaskTitle);
                         System.out.println("img title : *****************   "+ imgTitle);
                         String imageName = imgTitle.getText().toString();
@@ -220,6 +270,8 @@ public class addTask extends AppCompatActivity {
 
         return image;
     }
+
+
 }
 
 

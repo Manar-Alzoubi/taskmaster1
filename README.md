@@ -192,3 +192,21 @@
 
 
 ![download in taskdetails](screenShots/pic2.jpg)
+
+----------------------------------------------------
+#Lab 42
+* Today's work is on Main activity: 2 buttons added to the main activity to show the ads and a banner added  
+
+* Banner Ad: added to the bottom of the main activity
+
+![Banner Ad](screenShots/BannerAd.jpg)
+
+
+* Rewarded Ad button : a button added to the main activity and the Rewarded Ad appears when click on it 
+
+![Rewarded Ad](screenShots/rewardedAd.png)
+
+
+* Interstitial Ad button : a button added to the main activity and the Interstitial Ad appears when click on it
+
+![Interstitial Ad](screenShots/Interstitial.jpg)

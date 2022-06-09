@@ -49,88 +49,125 @@
 
     <TextView
         android:id="@+id/editTeam"
-        android:layout_width="387dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
         android:background="#009688"
         android:gravity="center"
         android:text="Tasks For : "
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/button8"
+        app:layout_constraintBottom_toTopOf="@+id/editUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button8"
-        android:layout_width="103dp"
-        android:layout_height="39dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="629dp"
+        android:layout_marginBottom="3dp"
         android:background="#009688"
         android:text="settings"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/editUserName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editUserName"
         app:layout_constraintTop_toBottomOf="@+id/editTeam" />
 
     <TextView
         android:id="@+id/editUserName"
-        android:layout_width="226dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="54dp"
         android:background="#009688"
         android:gravity="center"
         android:text="My Tasks"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-        app:layout_constraintStart_toStartOf="@+id/editTeam" />
+        app:layout_constraintEnd_toStartOf="@+id/button8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginStart="17dp"
         android:text="Add Task"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintStart_toStartOf="@+id/rewardedBtn" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="36dp"
-        android:text="All Tasks"
+        android:layout_marginEnd="5dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="All Tasks"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="@+id/adView" />
+
+    <Button
+        android:id="@+id/interstitialBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+
+        android:layout_marginBottom="8dp"
+        android:text=" interstitial ad."
+        app:layout_constraintBottom_toTopOf="@+id/button7"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/rewardedBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+
+        android:layout_marginBottom="8dp"
+        android:text="Rewarded Ad"
+        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintStart_toStartOf="@+id/recycler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="114dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="114dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="57dp"
         android:background="@color/white"
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/interstitialBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/editTeam" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="6dp"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/button6">
+
+    </com.google.android.gms.ads.AdView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
