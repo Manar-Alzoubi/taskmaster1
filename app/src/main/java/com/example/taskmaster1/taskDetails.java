@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,12 +16,20 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class taskDetails extends AppCompatActivity {
 
     private static final String TAG = "taskDetails";
     String imageKey ;
     ImageView newImage ;
+
+    private final MediaPlayer mp = new MediaPlayer();
+
 
 
     @Override
@@ -55,17 +65,30 @@ public class taskDetails extends AppCompatActivity {
 
                         if(imageKey!=null)
                             downloadImg(imageKey);
-//
-//                        String sourceImg=intent.getStringExtra("sourceImage");
-//
-//                        // https://www.codegrepper.com/code-examples/whatever/android+picasso+
-//                        if(sourceImg!=null){
-//                            Log.i(TAG, "downloaded successfuly"+ sourceImg);
-//                            Picasso.get().load(sourceImg).into(newImage);
-//                            System.out.println("image from details : +++++++++++++++++++++++++++++ "+ newImage);
-//                        }
-//
-//
+
+                        Button readVoice = findViewById(R.id.readBtn);
+                        readVoice.setOnClickListener(view -> {
+                            Amplify.Predictions.convertTextToSpeech(
+                                    newBody.getText().toString(),
+                                    result -> playAudio(result.getAudioData()),
+                                    error -> Log.e(TAG, "Conversion failed", error)
+                            );
+                        });
+
+
+                        Button translateBtn = findViewById(R.id.translateBtn);
+                        translateBtn.setOnClickListener(view -> {
+                            Amplify.Predictions.translateText(newBody.getText().toString(),
+                                    result -> {
+                                        runOnUiThread(() -> {
+                                            TextView translatedText = findViewById(R.id.translateBody);
+                                            translatedText.setText(result.getTranslatedText());
+                                        });
+                                        Log.i(TAG, result.getTranslatedText());
+                                    },
+                                    error -> Log.e(TAG, "Translation failed", error)
+                            );
+                        });
                     }
                 },
                 error -> Log.e(TAG, "Query failure", error)
@@ -80,18 +103,31 @@ public class taskDetails extends AppCompatActivity {
                 response -> {
 
                     Log.i(TAG, "Successfully downloaded: " + response.getFile().getName());
-
-                    //https://iqcode.com/code/other/how-to-get-bitmap-from-file-in-android
                     ImageView image = findViewById(R.id.s3Image);
-                    System.out.println("image --------------------- "+ findViewById(R.id.s3Image).toString());
                     Bitmap bitmap = BitmapFactory.decodeFile(getApplicationContext().getFilesDir()+"/"+ response.getFile().getName());
-//                    System.out.println(" bitmap 00000000000000000000 "+ bitmap);
                     image.setImageBitmap(bitmap);
-//                    System.out.println("  downloaded successfuly : "+bitmap);
 
                 },
                 error -> Log.e(TAG,  "Download Failure", error)
         );
+    }
+
+    private void playAudio(InputStream audioData) {
+        File mp3File = new File(getCacheDir(), "audio.mp3");
+
+        try (OutputStream out = new FileOutputStream(mp3File)) {
+            byte[] buffer = new byte[8 * 1_024];
+            int bytesRead;
+            while ((bytesRead = audioData.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            mp.reset();
+            mp.setOnPreparedListener(MediaPlayer::start);
+            mp.setDataSource(new FileInputStream(mp3File).getFD());
+            mp.prepareAsync();
+        } catch (IOException error) {
+            Log.e("MyAmplifyApp", "Error writing audio file", error);
+        }
     }
 
 }

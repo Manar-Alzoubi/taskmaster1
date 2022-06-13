@@ -194,6 +194,27 @@
 ![download in taskdetails](screenShots/pic2.jpg)
 
 ----------------------------------------------------
+# Lab 41 
+* in this lab the app will start collecting basic, aggregated analytics on user usage, and will also read task descriptions to users out loud and translate a specific text 
+
+* analytics : Amazon Pinpoint is used to add analytics to the app 
+  * taskmaster app start recording a  one AnalyticsEvent which is opening the program
+
+![analytics](screenShots/analytics.jpg)
+
+* Text To Speech: Amazon Polly is used to add a voice such as when you pressed the voice button 
+  to listen to the description of the task (task description will be read )
+  
+![Text To Speech](screenShots/textspeech.jpg)
+
+
+* Translate: Amazon Polly is used to add a translation of a text such as when you pressed the translate button
+  to see the translation of the description of the task (task description will be translated from english to Arabic )
+
+![Translate](screenShots/textspeech.jpg)
+
+
+------------------------------------------------------------------------------
 #Lab 42
 * Today's work is on Main activity: 2 buttons added to the main activity to show the ads and a banner added  
 
